@@ -28,10 +28,10 @@ export class DatabaseRepository<T extends object> {
       .replace(globalDashesRegex, ' ');
   }
 
+
   findOne(options: FindOneOptions<T>) {
     return this.repository.findOne(options);
   }
-
   async findOneOrFail(options: FindOneOptions<T>) {
     const document = await this.findOne(options);
 
@@ -42,6 +42,9 @@ export class DatabaseRepository<T extends object> {
     return document;
   }
 
+  save(options: DeepPartial<T>) {
+    return this.repository.save(options);
+  }
   findAll(options?: FindManyOptions<T>) {
     return this.repository.find(options);
   }
@@ -78,5 +81,8 @@ export class DatabaseRepository<T extends object> {
         `${capitalizeText(this.singlarTableName)} with provided params already exists`,
       );
     }
+  }
+  createQueryBuilder(alias?: string) {
+    return this.repository.createQueryBuilder(alias);
   }
 }
